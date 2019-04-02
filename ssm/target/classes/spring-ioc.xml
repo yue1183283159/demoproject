@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.3.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+    http://www.springframework.org/schema/jdbc
+    http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-4.3.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+    http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd">
+
+	<!-- <context:component-scan base-package="com.spring.ioc"></context:component-scan> -->
+	<bean id="testService" class="com.spring.ioc.TestService"></bean>
+	
+	<bean id="date1" class="java.util.Date"></bean>
+	<!-- 构造bean对象的方法 -->
+	<!-- new具体实例类构造对象 -->
+	<bean id="c1" class="java.util.GregorianCalendar"></bean>
+	<!-- 调用抽象类的的静态工厂方法构造对象 -->
+	<bean id="c2" class="java.util.Calendar"
+		factory-method="getInstance"></bean>
+	<!-- 指定调用哪个bean对象的方法构造对象 -->
+	<bean id="date2" factory-bean="c2" factory-method="getTime"></bean>
+	
+	<!--通过scope属性配置bean对象的作用域。 singleton(单例)，每次从容器返回的都是一个对象 。默认模式，可以省略不写。 prototype(多例)，每次从容器获取都新创建一个新的类实例 -->
+	<!-- 当对象的作用域是singleton的时候，生命周期由spring控制；当时prototype的时候， 生命周期不再由spring控制。init-method,destroy-method,自定义初始化，销毁时调用的 
+		方法，一般不需要指定。 lazy-init="true"使用的时候再加载。提供系统性能的一种手段。 -->
+	<bean id="helloService" init-method="init"
+		destroy-method="destroy" scope="singleton" lazy-init="true"
+		class="com.spring.ioc.HelloService"></bean>
+	<!-- <bean id="helloService" scope="prototype" class="com.spring.ioc.HelloService"></bean> -->
+	
+	<!-- 依赖注入，constructor,调用有参数的构造函数 1. 为类的属性赋值（使用setter或是有参数构造函数） -->
+	<bean id="sdf" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy/MM/dd"></constructor-arg>
+	</bean>
+	
+	<bean id="dataSource" class="com.spring.ioc.DataSource">
+		<property name="driver" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://localhost:3306/aiyunnet_db"></property>
+		<property name="userName" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean>
+	
+	<!-- ref 引用上一个bean -->
+	 <bean id="jdbcTemplate" class="com.spring.ioc.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	 
+	 <!-- 类中增加了有参构造函数，就必须显示提供一个无参构造函数，否则spring构造对象的时会报init() error -->
+	 <!-- 使用有参数构造函数时，constructor-arg按参数顺序给参数赋值 
+	 index指定参数顺序赋值。既可以有构造注入，也可以有set注入。构造注入可以指定参数类型。
+	 一般不使用index，因为这个程序是我们程序员开发的，所以就按照构造函数参数顺序赋值，不要打乱顺序。
+	 -->
+	 <!-- set注入底层系统会根据property元素指定的name属性的值，找到对应的set方法，然后
+	 调用set方法为属性赋值
+	  -->
+	 <bean id="datasource1" class="com.spring.ioc.DataSource">
+	 	<constructor-arg index="0" value="com.mysql.jdbc.Driver"></constructor-arg>
+	 	<constructor-arg value="jdbc:mysql://localhost:3306/aiyunnet_db"></constructor-arg>
+	 	<constructor-arg value="root" type="java.lang.String" ></constructor-arg>
+	 	<constructor-arg value="root"></constructor-arg>
+	 	<property name="coreSize" value="100"></property>
+	 </bean>
+	
+	<!-- 依赖注入高级，复杂的对象，包含多种数据结构的对象 -->
+	 <util:properties id="config" location="classpath:config.properties"></util:properties>
+	 <bean id="complexObject" class="com.spring.ioc.ComplexObject">
+		 <property name="strArr">
+	 		<list>
+	 			<value>a</value>
+	 			<value>b</value>
+				 <value>c</value>
+			 </list>
+		 </property>
+		 <property name="strList">
+		 	<list><!-- ArrayList -->
+		 		<value>zhangsan</value>
+		 		<value>lisi</value>
+		 		<value>wangwu</value>
+		 	</list>
+		 </property>
+		 <property name="tMap">
+		 	<map><!-- LinkedHashMap -->
+		 		<entry key="s1" value="12"></entry>
+		 		<entry key="s2" value="14"></entry>
+		 	</map>
+		 </property>
+		 <property name="configs">
+		 	<props>
+		 		<prop key="driver">#{config.driver}</prop>
+		 		<prop key="url">#{config.url}</prop>
+		 	</props>
+		 </property>
+	 </bean>
+	 <!-- 构造注入时引用其他bean对象（必须有对应的构造方法） -->
+	 <bean id="complexObject1" class="com.spring.ioc.ComplexObject">
+	 	<constructor-arg value="1"></constructor-arg>
+	 	<constructor-arg ref="dataSource"></constructor-arg>
+	 </bean>
+	 
+	 <!-- 自动装配。类型相同的对象，会有问题，不常用，了解。
+	 autowire="byType"使用set注入，类型一直的bean，此时xml中只能有一个类型相同的bean
+	 autowire="byName"使用set注入，找到set方法name一致的bean对象。
+	  -->
+	<!--  <bean id="jdbcTempalte1" 
+	 	class="com.spring.ioc.JdbcTemplate" 
+	 	autowire="byType"></bean>
+	 
+	 -->
+	<!-- 整合c3p0连接池 -->
+	<!-- 
+	<bean id="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl"
+			value="jdbc:mysql://localhost:3306/aiyunnet_db"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean> -->
+
+	<!-- 整合druid连接池 -->
+	<util:properties id="config"
+		location="classpath:config.properties"></util:properties>
+	<bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="#{config.driver}" />
+		<property name="url" value="#{config.url}" />
+		<property name="username" value="#{config.username}" />
+		<property name="password" value="#{config.password}" />
+
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="1" />
+		<property name="minIdle" value="1" />
+		<property name="maxActive" value="20" />
+	</bean>	
+	
+	<!-- 整合mybatis -->
+	<bean id="sqlSessionFactoryBean"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="druidDataSource"></property>
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml"></property>
+	</bean>
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactoryBean"></constructor-arg>
+	</bean>	
+	<!--配置自动扫描dao，mybatis中的dao映射接口，将对象存储到spring容器中，,spring mybatis 整合mybatis  -->
+	<!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="aiyunnet.dao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactoryBean"></property>
+	</bean> -->
+	
+	<!-- Spring JdbcTemplate -->
+	<bean id="jdbcTemplate2" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="druidDataSource"></property>
+	</bean>
+	<!-- Spring Integrate the service -->
+	<!-- <bean id="blogDao" class="aiyunnet.testservice.BlogDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean> -->
+	
+</beans>

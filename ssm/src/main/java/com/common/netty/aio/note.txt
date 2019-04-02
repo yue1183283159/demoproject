@@ -1,0 +1,5 @@
+NIO2.0引入了新的异步通道的概念，并提供了异步文件通道和异步套接字通道的实现。
+1)通过java.util.concurrent.Future类来表示异步操作的结果
+2)在执行异步操作的时候传入一个java.nio.channels
+CommpletionHandler接口的实现类作为操作完成的回调。
+NIO2.0的异步套接字通道是真正的异步非阻塞I/O。它不需要通过多路复用器（Selector）对注册的通道进行轮询操作即可实现异步读写，简化了NIO的编程模型。

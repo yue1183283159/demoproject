@@ -1,0 +1,4 @@
+加入解码器之后，拿到的message已经是解码成字符串之后的应答消息
+使用：LineBaseFrameDecoder 和StringDecoder就能解决TCP粘包导致的读半包或者多包的问题
+LineBaseFrameDecoder的工作原理是一次遍历ByteBuf中的可读字节，发现如何是"\n""\r\n"就以此位置为结束位置，从可读索引到结束位置区间的字节就组成一行。
+StringDecoder就是将接受到的对象转成字符串，然后继续调用后面的handler。

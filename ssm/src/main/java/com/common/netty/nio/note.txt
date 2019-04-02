@@ -1,0 +1,3 @@
+NIO(New I/O)或者叫Non-block I/O，非阻塞I/O
+NIO 提供了SocketChannel和ServerSocketChannel两种套接字通道实现，都支持阻塞和非阻塞两种模式。
+一般来说，低负载，低并发的应用程序可以选择同步阻塞I/O以降低编程复杂度；对于高负载，高并发的网络应用，需要使用NIO的非阻塞模式。

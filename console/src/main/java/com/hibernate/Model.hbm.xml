@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<!-- 通过XML映射，把对象映射到数据库的表中！ -->
+<!-- 通过XML映射，把对象映射到数据库的表中！ 
+	package 表示包名； 可选，如果没有写，后面的类必须指定类的全名！ auto-import="true" 
+	默认为true，即在写hql的时候，会自动引入包名； 如为false，hql中对象要写上包名称 Query q = session.createQuery("from 
+	Users"); -->
+<!-- class 表示映射的一个javabean对象 (可以有多个class节点，但一般一个映射文件对应一个class) name 表示映射的类的名称; 
+	table (可选)类的名称，对应的表名, 如果不写默认与类名称一样 -->
+<!-- id 表示映射的是主键 注意： 在hibernate的映射文件中，必须要有主键映射! 那就要求表必须要有主键！ generator 表示的是主键生成策略 
+	(Api : 5.1.2.2.1. Various additional generators) class identity 主键自增长， mysql/sqlservlet等数据库使用的自增长的方式 
+	sequence 以序列的方式实现自增长； native 表示主键自增长: 根据底层数据库的能力选择 identity、sequence等其中一个。 
+	assigned 手动指定主键的值 uuid uuid的值作为主键，确保一定唯一 -->
+<!-- property 表示普通字段的映射 name 属性的名称 column 可选，如果没有指定，与属性名称一致 length 表示字符长度，只对字符类型有效 
+	type 数据库中字段的类型 （如果没有指定，会匹配属性的类型） hibernate中指定的类型: 小写开头 java中类型: 写类的全名 unique 
+	设置为true，表示给当前列添加唯一约束 (主键约束 = 唯一约束 + 非空) -->
+<hibernate-mapping package="com.hibernate">
+	<class name="User" table="user">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" column="name"></property>
+		<property name="gender" column="gender"></property>
+		<property name="addon" column="addon"></property>
+	</class>
+	
+	<class name="Student" table="student">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" column="name" type="string"></property>
+		<property name="age" column="age" type="integer"></property>
+		<property name="teacherID" column="t_id" type="integer"></property>
+		<!-- <one-to-one name="teacher" class="aiyunnet.hibernate.Teacher" cascade="all"></one-to-one> -->
+	</class>
+	
+	<class name="com.hibernate.Teacher" table="teacher">
+		<id name="id" column="id" type="integer">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" column="name" type="string"></property>
+		<property name="type" column="type" type="string"></property>
+		<set name="students" cascade="save-update" inverse="true">
+			<key column="t_id"></key>
+			<one-to-many class="com.hibernate.Student"/>
+		</set>
+	</class>
+	
+	<!-- 一对一关系，Person类中有一个IdCard的类属性 -->
+	<!-- <class name="aiyunnet.hibernate.onetoone.Person" table="person">
+		<id name="id" column="id" type="string">
+			<generator class="uuid"></generator>
+		</id>
+		<property name="name" column="name" type="string"></property>
+		<one-to-one name="idCard" cascade="all" class="aiyunnet.hibernate.onetoone.IdCard"></one-to-one>
+	</class>
+	 -->
+</hibernate-mapping>
