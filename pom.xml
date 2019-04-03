@@ -12,7 +12,6 @@
         <module>console</module>
         <module>web</module>
         <module>ssm</module>
-        <module>ssm</module>
     </modules>
 
 
