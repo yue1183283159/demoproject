@@ -1,9 +1,0 @@
-1. 定义MyBatis Config类，用来封装MyBatis配置信息，如：数据库连接字符串，用户密码等
-2. 定义Mapper Info类，用来封装Mapper XML中的信息，如namespace，method type，id, resultType, parameter, sql等
-3. 定义Sql枚举类型，select，delete，update，insert。
-4. 定义Pojo类和对应的Dao接口
-5. 定义ConnectionManager类，获取Connection对象
-6. SqlSessionFactory类，初始化SqlMapperHolder对象，读取mapper中的信息到MapperInfo中；提供得到SqlSession的方法。
-7. SqlSession类通过代理来执行sql方法。SqlExecutorHandler类实现了InvocationHandler接口
-8. SqlExecutorHandler类执行sql，获取mapperInfo中的sql，创建PreparedStatement对象，
-设置参数，然后根据QueryType选择执行方法。如果是select，拿到返回结果之后。根据resultType，拿到类的字段，然后反射得到字段的类型，然后调用字段的set方法，通过字段名在结果集中获取数据然后反射invoke方法进行对象赋值，完成结果集的映射封装。

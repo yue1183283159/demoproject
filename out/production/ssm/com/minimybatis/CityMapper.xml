@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mapper namespace="com.minmybatis.CityDao">
-	<select id="findCityById" resultType="com.minmybatis.City">
-		select * from city where id=?
-	</select>
-</mapper>
