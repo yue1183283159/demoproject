@@ -19,7 +19,7 @@
 *.rar
 
 # IDEA Files
-.idea/
+/.idea
 *.iml
 
 
