@@ -1,8 +1,7 @@
 package com.algorithm;
 
 import java.util.Random;
-
-import org.junit.Test;
+import org.junit.*;
 
 public class AlgorithmUnitTest {
     @Test

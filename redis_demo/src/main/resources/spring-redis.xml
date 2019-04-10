@@ -24,7 +24,8 @@
     http://www.springframework.org/schema/util
     http://www.springframework.org/schema/util/spring-util-4.3.xsd
     http://www.springframework.org/schema/data/jpa">
-	<!-- 加载配置文件 -->
+
+    <!-- 加载配置文件 -->
 	<context:property-placeholder
 		location="classpath:redis.properties" />
 

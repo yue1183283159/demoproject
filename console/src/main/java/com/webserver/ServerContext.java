@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.dom4j.Document;
+/*import org.dom4j.Document;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
+import org.dom4j.io.SAXReader;*/
 
 import com.sun.org.apache.xalan.internal.xsltc.DOM;
 
@@ -33,7 +33,7 @@ public class ServerContext
 	{
 		try
 		{
-			SAXReader reader = new SAXReader();
+			/*SAXReader reader = new SAXReader();
 			Document document = reader.read("src/com/webserver/config.xml");
 			Element root = document.getRootElement();
 
@@ -49,7 +49,7 @@ public class ServerContext
 			for(Element mappingEle:mappingEles) 
 			{
 				Types.put(mappingEle.attributeValue("ext"), mappingEle.attributeValue("type"));
-			}
+			}*/
 			
 		} catch (Exception e)
 		{

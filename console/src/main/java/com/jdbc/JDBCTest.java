@@ -8,8 +8,7 @@ import java.util.Properties;
 
 import javax.sql.rowset.CachedRowSet;
 
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.*;
 import org.junit.Before;
 import org.junit.Test;
 
