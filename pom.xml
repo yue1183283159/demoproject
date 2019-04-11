@@ -185,12 +185,6 @@
             <version>2.0</version>
             <scope>provided</scope>
         </dependency>
-        <!-- ueditor使用的json包 -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20160810</version>
-        </dependency>
 
         <!-- 使用Lucene做站内文章检索，提高查询效率 -->
         <dependency>
