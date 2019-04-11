@@ -5,7 +5,8 @@ var reconnectCount = 0;
 
 function connectSocket() {
     var data = basicConfig();
-    if (data.websocketEnable !== "true") {
+
+    if (!data.websocketEnable) {
         return;
     }
 

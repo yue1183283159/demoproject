@@ -11,7 +11,7 @@ public class WebSocket {
     @RequestMapping("config")
     @ResponseBody
     public WebSocketConfig getConfig() {
-        WebSocketConfig webSocketConfig = new WebSocketConfig(true, "127.0.0.1", "8085", "/");
+        WebSocketConfig webSocketConfig = new WebSocketConfig(true, "127.0.0.1", "8085", "");
         return webSocketConfig;
     }
 }
